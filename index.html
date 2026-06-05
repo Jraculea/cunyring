@@ -4,33 +4,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CUNY Webring</title>
+  <title>CUNY Webring | Student Websites, Portfolios, and Projects</title>
   <meta name="description"
-    content="A webring for Computer Science students and alumni at the City University of New York.">
+    content="A webring of personal websites, portfolios, and projects by CUNY students and alumni in Computer Science and related fields.">
   <meta name="keywords"
     content="webring, The City University of New York, CUNY, Brooklyn College, BC, Computer Science, CS, personal websites, student portfolios">
 
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://cunyring.com/">
+  <meta property="og:site_name" content="CUNY Webring">
   <meta property="og:title" content="CUNY Webring">
   <meta property="og:description"
-    content="A webring for Computer Science students and alumni at the City University of New York.">
-  <meta property="og:image" content="http://cunyring.com/public/header.png">
-  <meta property="og:image:secure_url" content="https://cunyring.com/public/header.png">
+    content="A webring of personal websites, portfolios, and projects by CUNY students and alumni in Computer Science and related fields.">
+  <meta property="og:image" content="http://cunyring.com/header.png">
+  <meta property="og:image:secure_url" content="https://cunyring.com/header.png">
 
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://cunyring.com">
   <meta property="twitter:title" content="CUNY Webring">
   <meta property="twitter:description"
-    content="A webring for Computer Science students and alumni at the City University of New York.">
-  <meta property="twitter:image" content="https://cunyring.com/public/header.png">
+    content="A webring of personal websites, portfolios, and projects by CUNY students and alumni in Computer Science and related fields.">
+  <meta property="twitter:image" content="https://cunyring.com/header.png">
 
+  <link rel="canonical" href="https://cunyring.com/">
   <link rel="icon" type="image/svg+xml" href="/logos/bulldogs.svg" />
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "CUNY Webring",
+  "url": "https://cunyring.com",
+  "description": "A webring of personal websites, portfolios, and projects by CUNY students and alumni in Computer Science and related fields."
+}
+</script>
 
   <script type="module" src="/src/main.js"></script>
 </head>
 
-<body>
+<body
+  class="bg-bc-warmgray text-bc-light font-sans selection:bg-bc-maroon selection:text-bc-gold min-h-screen flex flex-col justify-between items-center px-4 md:px-8 overflow-x-hidden">
+  <header class="select-none">
+    <a href="https://github.com/jraculea/cunyring" target="_blank" rel="noopener noreferrer"
+      class="fixed top-8 left-8 lg:top-12 lg:left-12 z-50 block"
+      aria-label="View source code on GitHub">
+      <img src="/logos/cunyring.svg" alt="CUNY Webring Repository"
+        class="w-[32vw] max-w-[150px] landscape:w-[16vw] landscape:max-w-[124px] lg:w-[18vw] lg:landscape:w-[14vw] lg:max-w-[200px] lg:landscape:max-w-[200px] h-auto block" />
+    </a>
+  </header>
+
+  <main class="w-full max-w-5xl flex-1 flex flex-col items-center justify-center py-16 md:py-24">
+    <div id="canvas-container" class="w-full max-w-md h-5 lg:h-15 relative overflow-hidden"></div>
+
+    <section class="w-full flex flex-col items-center justify-center text-center px-4 overflow-hidden">
+      <h1
+        class="text-[10vw] md:text-[5rem] lg:text-[7rem] font-black tracking-tight uppercase mb-8 text-bc-light leading-none whitespace-nowrap block text-center mx-auto select-none">
+        CUNY Webring
+      </h1>
+
+      <p
+        class="text-[14px] md:text-[18px] lg:text-[20px] text-bc-light/65 leading-relaxed font-mono tracking-wide max-w-[64vw] lg:max-w-[64vw] lg:landscape:w-[75%] lg:landscape:max-w-[56vw] mx-auto select-none">
+        A student-built
+        <a href="https://en.wikipedia.org/wiki/Webring" target="_blank" rel="noopener noreferrer"
+          class="text-bc-gold hover:text-bc-maroon underline underline-offset-6 transition-colors font-black">webring</a>
+        connecting personal websites, portfolios, and projects by CUNY students and alumni in computer science and related
+        fields.
+      </p>
+    </section>
+
+    <section
+      class="w-[70%] landscape:w-[77%] max-w-[265px] landscape:max-w-[450px] md:w-[65%] md:max-w-[525px] lg:w-[78%] lg:landscape:w-[69%] lg:max-w-[650px] lg:landscape:max-w-[625px] px-4 mt-8 lg:mt-16 mb-16 relative">
+      <input type="text" id="search-bar" placeholder="Search name/year/school/site..."
+        class="w-full bg-transparent border-b border-bc-light/65 focus:border-bc-gold py-2 text-[12px] md:text-[16px] placeholder:text-bc-light/50 text-center tracking-wide font-mono outline-none transition-colors" />
+    </section>
+
+    <section
+      id="webring-grid"
+      class="w-[65%] flex flex-row flex-wrap items-center justify-center gap-x-12 gap-y-8 lg:gap-y-10 mx-auto px-4 font-mono text-md tracking-tight"
+    >
+      <a href="#" class="hover:text-bc-gold transition-colors block whitespace-nowrap">
+        example.vercel.app
+      </a>
+    </section>
+
+  </main>
+
+  <footer class="w-full flex justify-center select-none">
+    <a href="https://github.com/jraculea/cunyring/pulls" target="_blank" rel="noopener noreferrer"
+      class="fixed bottom-8 xl:bottom-12 left-1/2 -translate-x-1/2 z-50 bg-bc-light/50 xl:bg-bc-light text-bc-dark/70 xl:text-bc-dark font-mono font-black text-[10px] sm:text-xs tracking-widest uppercase px-8 py-0.5 xl:py-1 rounded-full shadow-2xl flex items-center gap-3 transition-all duration-200 hover:scale-105 hover:bg-bc-gold hover:text-bc-maroon active:scale-95 whitespace-nowrap">
+      add your site <span class="text-xl">→</span>
+    </a>
+  </footer>
+
 </body>
 
 </html>

@@ -59,6 +59,36 @@ function displayWebringGridError() {
   webringContainer.appendChild(errorMsg);
 }
 
+function handleRouting(members) {
+  if (!members || members.length === 0) return false;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const action = urlParams.get("action");
+
+  if (!action) return false;
+
+  const fromSite = urlParams.get("from");
+  const currentSite = fromSite ? normalizeSiteUrl(fromSite) : "";
+  const currentIndex = members.findIndex(m => normalizeSiteUrl(m.site) === currentSite);
+
+  let targetIndex;
+
+  if (action === "next") {
+    targetIndex = currentIndex === -1 ? 0 : (currentIndex + 1) % members.length;
+  } else if (action === "prev") {
+    targetIndex = currentIndex === -1 ? members.length - 1 : (currentIndex - 1 + members.length) % members.length;
+  } else {
+    return false;
+  }
+
+  const targetSite = members[targetIndex].site;
+  const targetUrl = targetSite.startsWith("http") ? targetSite : `https://${targetSite}`;
+
+  window.location.replace(targetUrl);
+
+  return true;
+}
+
 async function fetchMembers() {
   const response = await fetch(MembersDataPath);
 
@@ -130,8 +160,12 @@ function setUpSearchListener() {
 async function initialize() {
   try {
     const membersData = await fetchMembers();
-    allMembers = normalizeMembers(membersData);
+    const isRedirecting = handleRouting(membersData);
 
+    if (isRedirecting) return;
+
+    allMembers = normalizeMembers(membersData);
+    
     initializeWebringGrid(allMembers);
     setUpSearchListener();
   } catch (error) {

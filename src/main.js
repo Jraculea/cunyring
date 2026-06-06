@@ -6,12 +6,46 @@ const SearchBarId = "search-bar";
 
 let allMembers = [];
 
-function formatInput(value) {
-    return value.toLowerCase().trim()
-        .replace(/^https?:\/\//, "")
-        .replace(/^www\./, "")
-        .replace(/\s+/g, "")
-        .replace(/\/$/, "");
+function normalizeSiteUrl(url) {
+  return url.toLowerCase().trim()
+    .replace(/^https?:\/\//, "")
+    .replace(/^www\./, "")
+    .replace(/\s+/g, "")
+    .replace(/\/$/, "");
+}
+
+function normalizeField(value) {
+  return value.toLowerCase().trim()
+    .replace(/\s+/g, "");
+}
+
+function abbreviateSchool(input) {
+  const schoolNameMap = {
+    "baruch college": "BARUCH",
+    "borough of manhattan community college": "BMCC",
+    "bronx community college": "BCC",
+    "brooklyn college": "BC",
+    "college of staten island": "CSI",
+    "cuny school of labor and urban studies": "SLU",
+    "cuny school of medicine": "SOM",
+    "cuny school of professional studies": "SPS",
+    "guttman community college": "GCC",
+    "hostos community college": "HCC",
+    "hunter college": "HC",
+    "john jay college of criminal justice": "JJAY",
+    "kingsborough community college": "KCC",
+    "laguardia community college": "LCC",
+    "lehman college": "LC",
+    "macaulay honors college": "MHC",
+    "medgar evers college": "MEC",
+    "new york city college of technology": "CITYTECH",
+    "queens college": "QC",
+    "queensborough community college": "QCC",
+    "the city college of new york": "CCNY",
+    "york college": "YC"
+  };
+
+  return schoolNameMap[input.toLowerCase().trim()] ?? "";
 }
 
 function displayWebringGridError() {
@@ -35,12 +69,13 @@ async function fetchMembers() {
   return response.json();
 }
 
-function formatMembers(membersData) {
+function normalizeMembers(membersData) {
   return membersData.map(member => ({
-    name: formatInput(member.name),
-    year: formatInput(member.year),
-    school: formatInput(member.school),
-    site: formatInput(member.site)    
+    name: normalizeField(member.name),
+    year: normalizeField(member.year),
+    schoolAcronym: normalizeField(abbreviateSchool(member.school)),
+    school: normalizeField(member.school),
+    site: normalizeSiteUrl(member.site)    
   }));
 }
 
@@ -73,12 +108,32 @@ function initializeWebringGrid(members) {
   webringContainer.appendChild(fragment);
 }
 
+function setUpSearchListener() {
+  const input = document.getElementById(SearchBarId);
+
+  if (!input) return;
+
+  input.addEventListener("input", (event) => {
+    const query = normalizeField(event.target.value);
+    const filteredMembers = allMembers.filter(member =>
+      (member.name && member.name.includes(query)) ||
+      (member.year && member.year.includes(query)) ||
+      (member.school && member.school.includes(query)) ||
+      (member.schoolAcronym && member.schoolAcronym.includes(query)) ||
+      (member.site && member.site.includes(query))
+    );
+    
+    initializeWebringGrid(filteredMembers);
+  });
+}
+
 async function initialize() {
   try {
     const membersData = await fetchMembers();
-    allMembers = formatMembers(membersData);
+    allMembers = normalizeMembers(membersData);
 
     initializeWebringGrid(allMembers);
+    setUpSearchListener();
   } catch (error) {
     console.error("Failed to load webring member data:", error);
     displayWebringGridError();

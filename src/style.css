@@ -40,26 +40,11 @@
   --color-bc-dark: #0b0b0b;
   --color-bc-light: #f9f9f9;
 
-  --font-sans: "Trade Gothic", /*"Trade Gothic Next LT Pro BdCn",*/ sans-serif;
-  --font-mono: "JetBrains Mono", "Fira Code", monospace;
-}
-
-@font-face {
-    font-family: "Trade Gothic Next LT Pro BdCn";
-    src: url("https://db.onlinewebfonts.com/t/b491db99790e4fce858c18892824b2a5.eot");
-    src: url("https://db.onlinewebfonts.com/t/b491db99790e4fce858c18892824b2a5.eot?#iefix")format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/b491db99790e4fce858c18892824b2a5.woff2")format("woff2"),
-    url("https://db.onlinewebfonts.com/t/b491db99790e4fce858c18892824b2a5.woff")format("woff"),
-    url("https://db.onlinewebfonts.com/t/b491db99790e4fce858c18892824b2a5.ttf")format("truetype"),
-    url("https://db.onlinewebfonts.com/t/b491db99790e4fce858c18892824b2a5.svg#Trade Gothic Next LT Pro BdCn")format("svg");
+  --font-sans: "Trade Gothic", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 body {
-  background-color: var(--color-bc-warmgray);
-  color: var(--color-bc-light);
-  font-family: var(--font-sans);
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   overflow-x: hidden;
 }

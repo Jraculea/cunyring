@@ -105,7 +105,8 @@ function normalizeMembers(membersData) {
     year: normalizeField(member.year),
     schoolAcronym: normalizeField(abbreviateSchool(member.school)),
     school: normalizeField(member.school),
-    site: normalizeSiteUrl(member.site)    
+    displaySite: normalizeSiteUrl(member.site),
+    site: member.site
   }));
 }
 
@@ -130,7 +131,7 @@ function initializeWebringGrid(members) {
     anchor.href = member.site.startsWith("http") ? member.site : `https://${member.site}`;
     anchor.rel = "noopener noreferrer";
     anchor.className = "hover:text-bc-gold transition-colors whitespace-nowrap";
-    anchor.textContent = member.site;
+    anchor.textContent = member.displaySite;
 
     fragment.appendChild(anchor);
   }

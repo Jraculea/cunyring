@@ -1,6 +1,6 @@
 import './style.css'
+import membersSorted from './members-sorted.json'
 
-const MembersDataPath = "/members.json";
 const WebringGridId = "webring-grid";
 const SearchBarId = "search-bar";
 
@@ -89,16 +89,6 @@ function handleRouting(members) {
   return true;
 }
 
-async function fetchMembers() {
-  const response = await fetch(MembersDataPath);
-
-  if (!response.ok) {
-    throw new Error(`HTTP error; Status: ${response.status}`);
-  }
-
-  return response.json();
-}
-
 function normalizeMembers(membersData) {
   return membersData.map(member => ({
     name: normalizeField(member.name),
@@ -160,13 +150,12 @@ function setUpSearchListener() {
 
 async function initialize() {
   try {
-    const membersData = await fetchMembers();
-    const isRedirecting = handleRouting(membersData);
+    const isRedirecting = handleRouting(membersSorted);
 
     if (isRedirecting) return;
 
-    allMembers = normalizeMembers(membersData);
-    
+    allMembers = normalizeMembers(membersSorted);
+
     initializeWebringGrid(allMembers);
     setUpSearchListener();
   } catch (error) {

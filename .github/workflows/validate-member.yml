@@ -1,0 +1,62 @@
+name: Validate New Member
+
+on:
+  pull_request_target:
+    paths:
+      - 'members/*.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
+          fetch-depth: 0
+
+      - name: Overlay PR member files
+        run: |
+          git fetch origin pull/${{ github.event.pull_request.number }}/head
+          MERGE_BASE=$(git merge-base HEAD ${{ github.event.pull_request.head.sha }})
+          for file in $(git diff --name-only "$MERGE_BASE" ${{ github.event.pull_request.head.sha }} -- 'members/*.json'); do
+            git show ${{ github.event.pull_request.head.sha }}:"$file" > "$file" 2>/dev/null || rm -f "$file"
+          done
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm ci
+
+      - name: Run validation
+        id: validate
+        run: |
+          set +e
+          OUTPUT=$(node scripts/validate-member.js 2>&1)
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          {
+            echo "output<<VALIDATION_EOF"
+            echo "$OUTPUT"
+            echo "VALIDATION_EOF"
+          } >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Post PR comment
+        uses: actions/github-script@v7
+        env:
+          VALIDATION_OUTPUT: ${{ steps.validate.outputs.output }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: process.env.VALIDATION_OUTPUT
+            });
+
+      - name: Exit with validation result
+        if: steps.validate.outputs.exit_code != '0'
+        run: exit 1

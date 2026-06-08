@@ -142,3 +142,5 @@ Thanks to everyone who joins!
 <p align="center">
 	<img src="public/logos/bulldogs.svg" alt="Licensed under MIT." width="65" />
 </p>
+
+<br/>

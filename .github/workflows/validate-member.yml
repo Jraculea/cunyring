@@ -1,5 +1,8 @@
 name: Validate New Member
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   pull_request_target:
     paths:
@@ -28,7 +31,9 @@ jobs:
         with:
           node-version: '20'
 
-      - run: npm ci
+      - name: Install dependencies
+        run: |
+          npm ci || npm install
 
       - name: Run validation
         id: validate

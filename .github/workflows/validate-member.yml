@@ -60,3 +60,4 @@ jobs:
       - name: Exit with validation result
         if: steps.validate.outputs.exit_code != '0'
         run: exit 1
+        
